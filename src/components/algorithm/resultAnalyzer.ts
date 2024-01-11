@@ -1,9 +1,9 @@
-interface CheckResultProps {
+interface checkRockPaperScissorsProps {
 	selectedPositions: string[];
 	computerPosition: string;
   }
   
-  const checkResult = ({ selectedPositions, computerPosition }: CheckResultProps): string => {
+  const checkRockPaperScissors = ({ selectedPositions, computerPosition }: checkRockPaperScissorsProps): string => {
 	const selected = selectedPositions.map((position) => position.toLowerCase()).sort().join(',');
   
 	if (selectedPositions.length === 1) {
@@ -43,5 +43,5 @@ interface CheckResultProps {
 	}
   };
   
-  export default checkResult;
+  export default checkRockPaperScissors;
   

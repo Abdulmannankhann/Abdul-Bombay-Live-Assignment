@@ -1,23 +1,24 @@
 import React, { useEffect, useRef, useState } from 'react';
-import checkResult from './checkResult';
-import Card from 'react-bootstrap/Card';
-import Confetti from 'react-confetti'
+import checkResult from './algorithm/resultAnalyzer';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../redux/store/store';
+import { creditBalance } from '../redux/slices/userSlice';
 
 interface GameResultProps {
   selectedPositions: string[];
-  balance: number;
-  betAmount:number;
-  setBalance: React.Dispatch<React.SetStateAction<number>>;
   setGameStarted: React.Dispatch<React.SetStateAction<boolean>>;
-  setGameFinished: React.Dispatch<React.SetStateAction<boolean>>;
+  setGameOver: React.Dispatch<React.SetStateAction<boolean>>;
+  resetGame:() => void;
 }
 
-const GameResult: React.FC<GameResultProps> = ({ selectedPositions, balance, betAmount, setBalance, setGameStarted, setGameFinished }) => {
+const GameResult: React.FC<GameResultProps> = ({ selectedPositions, setGameStarted, setGameOver, resetGame }) => {
+	const dispatch = useDispatch()
+	const { currentBet:betAmount, winningAmount } = useSelector((state: RootState) => state.rockpaperscissors);
   const [computerPosition, setComputerPosition] = useState<string>('');
   const [showResult, setShowResult] = useState<boolean>(false);
-  const winningAmount = selectedPositions.length === 1 ? betAmount * 14 : betAmount * 3;
   const selectedPositionsDisplay = selectedPositions.length > 1 ? `${selectedPositions.join(", ")}` : `${selectedPositions}`
   const winningDivRef = useRef<HTMLDivElement>(null);
+  const [resultText, setResultText] = useState<React.ReactNode | null>(null);
 
   useEffect(() => {
     // Generate a random computer position when the component mounts
@@ -28,7 +29,7 @@ const GameResult: React.FC<GameResultProps> = ({ selectedPositions, balance, bet
     // After 2 seconds, show the result
     const timeoutId = setTimeout(() => {
       setShowResult(true);
-	  setGameFinished(true);
+	  setGameOver(true);
     }, 3000);
 
     // Clear the timeout when the component unmounts
@@ -41,51 +42,65 @@ const GameResult: React.FC<GameResultProps> = ({ selectedPositions, balance, bet
     computerPosition: computerPosition.toLowerCase(),
   });
 
-  const getResult = (): React.ReactNode => {
-    switch (result) {
-      case 'win':
-        return <>
-		<Confetti width={winningDivRef?.current?.clientWidth} height={winningDivRef?.current?.clientHeight}/>
-		<h2 className='win'>{selectedPositionsDisplay} Won</h2>
-		<h2>You Win {winningAmount}</h2>
-		</>;
-      case 'lose':
-        return <>
-		<h2 className='loose'>{selectedPositionsDisplay} Lost</h2>
-		<h2>You Lost {betAmount}</h2>
-		</>;
-      case 'tie':
-        return <>
-		<h2 className='tie'>It's a Tie</h2>
-		<h2>You Lost {betAmount}</h2>
-		</>;
-      default:
-        return 'Invalid result';
+  const handleAddToWallet = (): void => {
+	dispatch(creditBalance(winningAmount))
+  }
+
+  useEffect(() => {
+    // Check the result only when the component is initially rendered
+    if (showResult) {
+      getResult();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showResult]);
+
+  const getResult = (): void => {
+    const result = checkResult({
+      selectedPositions,
+      computerPosition: computerPosition.toLowerCase(),
+    });
+
+    if (result === 'win') {
+      setResultText(
+        <>
+          <h2 className='win'>{selectedPositionsDisplay} Won</h2>
+          <h2 className='text-highlight'>You Win <strong className='text-white'>{winningAmount}</strong></h2>
+          {/*<button className='secondary-button' onClick={handleAddToWallet}>Add to Wallet</button>*/}
+        </>
+      );
+	  handleAddToWallet()
+    } else if (result === 'lose') {
+      setResultText(
+        <>
+          <h2 className='loose'>{selectedPositionsDisplay} Lost</h2>
+          <h2 className='text-highlight'>You Lost <strong className='text-white'>{betAmount}</strong></h2>
+        </>
+      );
+    } else if (result === 'tie') {
+      setResultText(
+        <>
+          <h2 className='tie'>It's a Tie</h2>
+          <h2 className='text-highlight'>You Lost <strong className='text-white'>{betAmount}</strong></h2>
+        </>
+      );
+    } else {
+      setResultText(<h2 className='text-highlight'>Invalid Result</h2>);
     }
   };
+
+  useEffect(() => {
+    getResult(); // Call getResult on component mount
+  }, []); // Empty dependency array means it runs once on mount
   
   return (
-    <div className='container'>
-	  <div ref={winningDivRef}>{showResult ? ( 
-	  <>
-	  <Card style={{minHeight:"400px", borderColor:"gray"}}>
-		<Card.Body className='d-flex justify-content-evenly align-items-center'>
-			<div className='d-flex flex-column align-items-center'>{getResult()}</div>
-		</Card.Body>
-	  </Card>
-	  </>
-      ) : (
-        <>
-		<Card style={{minHeight:"400px", borderColor:"gray"}}>
-			<Card.Body className='d-flex justify-content-evenly align-items-center'>
-        <h2>{computerPosition}</h2>
-        <h2>VS</h2>
-        <h2>{selectedPositionsDisplay}</h2>
-      </Card.Body>
-    </Card>
-		</>
+    <div  ref={winningDivRef}>
+	  {showResult ? (<div className='game-container'>{resultText}</div>) : (
+		<div className='game-container flex-row gap-5'>
+			<h2 className='text-white'>{computerPosition}</h2>
+			<h5 className='text-highlight'>VS</h5>
+			<h2 className='text-white'>{selectedPositionsDisplay}</h2>
+		</div>
       )}
-    </div>
     </div>
   );
 };
