@@ -19,7 +19,7 @@ npm start
 ## Demo
 
 
-[Demo](https://abdulmannankhan.netlify.app/)
+[Demo](http://abdul-bombay-live-task.netlify.app)
 
 
 ## Thank you!!
