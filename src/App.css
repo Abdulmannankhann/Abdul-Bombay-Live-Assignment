@@ -20,39 +20,39 @@ body{
   }
 
 
-  .betButton {
+  .position-btn {
 	width: 33.333333%;
-	max-width: 140px;
 	height: 100px;
-	border-radius: 6px;
+	max-width: 140px;
 	display: flex;
+	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	flex-direction: column;
-	gap: 0.75rem;
+	gap: 12px;
 	font-weight: 700;
 	font-size: 20px;;
 	transition: all 0.2s ease-in-out;
+	border-radius: 6px;
   }
-  .betButton .chip {
+  .position-btn .chip {
+	  width: 35px;
+	  height: 35px;
 	background-color: white;
-	width: 35px;
-	height: 35px;
 	border-radius: 50%;
 	border: 4px solid #0f55d6;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	font-weight: 500;
-	padding: 20px;
+	padding: 22px;
 	color: #000;
-	margin-top: 5px;
+	margin-top: 8px;
 	font-size: 16px;
   }
-  .betButton:hover .chip {
+  .position-btn:hover .chip {
     border: 4px solid #000;
 }
-  .betButton .empty-chip {
+  .position-btn .empty-chip {
 	width: 35px;
 	height: 35px;
 	border-radius: 50%;
@@ -62,38 +62,38 @@ body{
 	font-weight: 500;
 	padding: 20px;
   }
-  .betButton.rock {
+  .position-btn.rock {
 	background-color: #051c48;
 	color: #0f55d6;
 	border: 2px solid #0f55d6;
   }
-  .betButton.rock:hover {
+  .position-btn.rock:hover {
 	background-color: #0f55d6;
 	border: 2px solid #000;
   }
-  .betButton.paper {
+  .position-btn.paper {
 	background-color: #0b311b;
 	color: #208b3f;
 	outline-color: #208b3f;
   }
-  .betButton.paper:hover {
+  .position-btn.paper:hover {
 	background-color: #208b3f;
 	border: 2px solid #000;
   }
-  .betButton.scissors {
+  .position-btn.scissors {
 	background-color: #50091e;
 	color: #d1133d;
 	outline-color: #d1133d;
   }
-  .betButton.scissors:hover {
+  .position-btn.scissors:hover {
 	background-color: #d1133d;
 	border: 2px solid #000;
   }
-  .betButton:hover {
+  .position-btn:hover {
 	color: #000;
   }
 
-  .primary-button {
+  .primary-btn {
 	background-color: #000;
 	color: #99815b;
 	font-weight: 500;
@@ -106,18 +106,18 @@ body{
 	transition: all 0.2s ease-in-out;
 	margin-top: 10px;
   }
-  .primary-button:hover {
+  .primary-btn:hover {
 	background-color: #99815b;
 	color: #000;
 	border-color: #99815b;
   }
-  .primary-button:disabled {
+  .primary-btn:disabled {
 	background-color: #000;
 	color: rgba(177, 131, 72, 0.3);
 	border-color: rgba(177, 131, 72, 0.3);
   }
 
-  .secondary-button {
+  .secondary-btn {
 	background-color: #000;
 	color: #99815b;
 	font-weight: 500;
@@ -130,7 +130,7 @@ body{
 	transition: all 0.2s ease-in-out;
 	margin-top: 10px;
   }
-  .secondary-button:hover {
+  .secondary-btn:hover {
 	background-color: #99815b;
 	color: #000;
 	border-color: #99815b;

@@ -1,6 +1,5 @@
-import React from 'react';
 import Header from './components/header/Header';
-import BettingArea from './components/BettingArea';
+import BettingArea from './components/game/rockPaperScissors/RPSGameBoard';
 import "./App.css"
 
 function App() {
