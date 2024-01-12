@@ -148,19 +148,19 @@ body{
    
    @media (min-width: 768px) {
 	.game-container {
-	   min-height: 500px;
+	   min-height: 420px;
 	}
    }
    
    @media (min-width: 992px) {
 	.game-container {
-	   min-height: 500px;
+	   min-height: 420px;
 	}
    }
    
    @media (min-width: 1200px) {
 	.game-container {
-	   min-height: 500px;
+	   min-height: 420px;
 	}
    }
 
